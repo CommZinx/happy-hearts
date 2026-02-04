@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This for you twin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pangolin&display=swap');
+        body {
+            font-family: 'Pangolin', cursive;
+            background-color: #ffe4e6;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .heart {
+            position: fixed;
+            top: -10%;
+            font-size: 20px;
+            color: #ff4d6d;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+        .hidden { display: none; }
+        
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #db2777;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="step-1" class="relative z-10 bg-white p-8 rounded-3xl shadow-xl border-4 border-pink-300 text-center max-w-sm w-full mx-4">
+        <h1 class="text-2xl font-bold text-pink-600 mb-6">Enter your name:</h1>
+        <input type="text" id="nameInput" placeholder="Enter name..." 
+               class="w-full p-3 border-2 border-pink-200 rounded-xl mb-4 focus:outline-none focus:border-pink-500 text-center text-lg">
+        <button onclick="startTyping()" class="bg-pink-500 text-white font-bold py-2 px-8 rounded-full text-xl hover:bg-pink-600 transition">
+            Enter
+        </button>
+    </div>
+
+    <div id="step-2" class="hidden relative z-10 bg-white p-8 rounded-3xl shadow-xl border-4 border-pink-300 text-left max-w-md w-full mx-4">
+        <div class="text-pink-600 text-xl font-bold mb-4">Message for you:</div>
+        <div id="typewriter-text" class="text-gray-700 text-lg leading-relaxed min-h-[100px]"></div>
+        <span id="cursor" class="cursor">&nbsp;</span>
+    </div>
+
+    <div id="step-3" class="hidden relative z-10 bg-white p-8 rounded-3xl shadow-xl border-4 border-pink-300 text-center max-w-sm w-full mx-4">
+        <img id="bear-img" class="w-48 h-48 mx-auto mb-6" src="https://media.tenor.com/0J4WPQICaFYAAAAi/pipsqueak.gif">
+        <h1 id="valentineText" class="text-3xl font-bold text-pink-600 mb-8">Your call bro, Will you be my Valentine?</h1>
+        <div class="flex justify-center items-center gap-4 h-20">
+            <button id="yesBtn" onclick="celebrate()" class="bg-green-500 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg">Yes</button>
+            <button id="noBtn" onmouseover="dodge()" class="bg-red-500 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transition-all">No</button>
+        </div>
+    </div>
+
+    <script>
+        let yesSize = 1;
+        
+        function startTyping() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name.toLowerCase() !== "jlee") {
+                alert("Please enter Jlee's name!");
+                return;
+            }
+
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+
+            const part1 = `Hiiii jleee.... Actually matagal ko nang pinagiisipan kung pano umamin sayo HAHAHAH, why not idaan ko sa kung saan ako magaling? kako. so eto na yun. I know this might be sudden, but I just can't keep it to myself anymore. UHMMMMM UHMMMM `;
+            const part2 = `I like You bro:<. For so many reasons, I like your flaws, your imperfections, and the way they make you so perfectly <3❤️`;
+            
+            let i = 0;
+            const speed = 50;
+
+            function typePart1() {
+                if (i < part1.length) {
+                    document.getElementById("typewriter-text").innerHTML += part1.charAt(i);
+                    i++;
+                    setTimeout(typePart1, speed);
+                } else {
+                    // 1.5 Second delay before "I like You"
+                    setTimeout(() => {
+                        i = 0;
+                        typePart2();
+                    }, 1500);
+                }
+            }
+
+            function typePart2() {
+                if (i < part2.length) {
+                    document.getElementById("typewriter-text").innerHTML += part2.charAt(i);
+                    i++;
+                    setTimeout(typePart2, speed);
+                } else {
+                    // Wait 6 seconds before showing the question
+                    setTimeout(() => {
+                        document.getElementById('step-2').classList.add('hidden');
+                        document.getElementById('step-3').classList.remove('hidden');
+                    }, 6000);
+                }
+            }
+            
+            typePart1();
+        }
+
+        function dodge() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            yesSize += 0.5;
+            yesBtn.style.transform = `scale(${yesSize})`;
+        }
+
+        function celebrate() {
+            document.getElementById('step-3').innerHTML = `
+                <img class="w-48 h-48 mx-auto mb-6" src="https://media1.tenor.com/m/4z-jYSAJj1MAAAAC/waffascraffa-hamster-meme.gif">
+                <h1 class="text-3xl font-bold text-pink-600">NIGGGGGEERRRRRRR</h1>
+                <p class="text-gray-600 mt-4 text-xl">Message moko pabalik after neto >:( </p>
+            `;
+            setInterval(createHeart, 100);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
